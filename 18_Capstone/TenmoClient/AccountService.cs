@@ -12,9 +12,9 @@ namespace TenmoClient
         private readonly IRestClient client = new RestClient();
         private object registerUser;
 
-        public API_Account GetAccount()
+        public API_Account GetAccount(int userID)
         {
-            RestRequest request = new RestRequest(API_BASE_URL + "account");
+            RestRequest request = new RestRequest($"{API_BASE_URL} account/{userID}");
             // MIGHT add account number later GetAccount
             IRestResponse<API_Account> response = client.Get<API_Account>(request);
             return response.Data;
