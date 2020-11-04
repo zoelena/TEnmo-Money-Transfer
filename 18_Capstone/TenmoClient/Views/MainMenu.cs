@@ -27,8 +27,8 @@ namespace TenmoClient.Views
 
         private MenuOptionResult ViewBalance()
         {
-            
-            Console.WriteLine("Not yet implemented!");
+            decimal returnedBalance = AccountService.GetBalance();
+            Console.WriteLine($"Balance: {returnedBalance}");
             return MenuOptionResult.WaitAfterMenuSelection;
         }
 
