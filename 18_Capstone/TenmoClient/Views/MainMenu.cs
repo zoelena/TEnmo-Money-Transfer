@@ -8,7 +8,7 @@ namespace TenmoClient.Views
 {
     public class MainMenu : ConsoleMenu
     {
-
+        private AccountService accountService;
         public MainMenu()
         { 
             AddOption("View your current balance", ViewBalance)
@@ -27,7 +27,9 @@ namespace TenmoClient.Views
 
         private MenuOptionResult ViewBalance()
         {
-            decimal returnedBalance = AccountService.GetBalance(UserService.GetUserId);
+            int userId = UserService.GetUserId();
+            UserService.SetAccount(accountService.GetAccount(userId));
+            decimal returnedBalance = UserService.GetBalance();
             Console.WriteLine($"Balance: {returnedBalance}");
             return MenuOptionResult.WaitAfterMenuSelection;
         }
