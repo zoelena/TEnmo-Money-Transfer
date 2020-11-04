@@ -27,6 +27,7 @@ namespace TenmoClient.Views
 
         private MenuOptionResult ViewBalance()
         {
+            
             Console.WriteLine("Not yet implemented!");
             return MenuOptionResult.WaitAfterMenuSelection;
         }
