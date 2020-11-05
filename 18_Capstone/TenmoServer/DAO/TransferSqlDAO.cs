@@ -32,9 +32,17 @@ namespace TenmoServer.DAO
             
         }
 
-        public Transfer GetSpecificTransfer()
+        public Transfer GetSpecificTransfer(int transferId)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select * from transfer where transfer_id = @transferid", connection);
+                command.Parameters.AddWithValue("@transferid", transferId);
+                SqlDataReader reader = command.ExecuteReader();
+                Transfer retrievedTransfer = GetTransferFromReader(reader);
+                return retrievedTransfer
+            }            
         }
 
         public List<Transfer> TransferList(int accountId)
@@ -46,7 +54,7 @@ namespace TenmoServer.DAO
                 SqlCommand command = new SqlCommand("select * from transfers where (account_from = @accountId)  or(account_to = @accountId)", connection);
                 command.Parameters.AddWithValue("@accountId", accountId);
                 SqlDataReader reader = command.ExecuteReader();
-                while (!reader.Read())
+                while (reader.Read())
                 {
                     transfers.Add(GetTransferFromReader(reader));
                 }

@@ -38,7 +38,12 @@ namespace TenmoServer.Controllers
             {
                 return BadRequest(new { message = "Insufficient Funds" });
             }
+        }
 
+        [HttpGet("{accountId}")]
+        public List<Transfer> ListTransfers(int accountId)
+        {
+            return transferDAO.TransferList(accountId);
         }
     }
 }
