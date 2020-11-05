@@ -41,7 +41,7 @@ namespace TenmoServer.DAO
                 command.Parameters.AddWithValue("@transferid", transferId);
                 SqlDataReader reader = command.ExecuteReader();
                 Transfer retrievedTransfer = GetTransferFromReader(reader);
-                return retrievedTransfer
+                return retrievedTransfer;
             }            
         }
 
@@ -71,11 +71,45 @@ namespace TenmoServer.DAO
                 TransferStatusID = Convert.ToInt32(reader["transfer_status_id"]),
                 AccountFrom = Convert.ToInt32(reader["account_from"]),
                 AccountTo = Convert.ToInt32(reader["account_to"]),
-                Amount = Convert.ToDecimal(reader["amount"]),
-
+                Amount = Convert.ToDecimal(reader["amount"])
             };
 
+            transfer.FromName = GetName(transfer.AccountFrom);
+            transfer.ToName = GetName(transfer.AccountTo);
+            transfer.TypeName = GetTransferType(transfer.TransferTypeID);
+            transfer.StatusName = GetTransferStatus(transfer.TransferStatusID);
+
             return transfer;
+        }
+        private string GetName(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select username from accounts join users on accounts.user_id = users.user_id where account_id = @accountid", connection);
+                command.Parameters.AddWithValue("@accountid", id);
+               return Convert.ToString(command.ExecuteScalar());
+            }
+        }
+        private string GetTransferType(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select transfer_type_desc from transfer_types where transfer_type_id = @typeid", connection);
+                command.Parameters.AddWithValue("@typeid", id);
+                return Convert.ToString(command.ExecuteScalar());
+            }
+        }
+        private string GetTransferStatus(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select transfer_status_desc from transfer_statuses where transfer_status_id = @statusid", connection);
+                command.Parameters.AddWithValue("@statusid", id);
+                return Convert.ToString(command.ExecuteScalar());
+            }
         }
     }
 }
