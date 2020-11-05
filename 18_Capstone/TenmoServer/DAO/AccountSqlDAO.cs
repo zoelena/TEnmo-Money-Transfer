@@ -7,7 +7,7 @@ using TenmoServer.Models;
 
 namespace TenmoServer.DAO
 {
-    public class AccountSqlDAO
+    public class AccountSqlDAO : IAccountDAO
     {
         private readonly string connectionString;
 
@@ -16,7 +16,12 @@ namespace TenmoServer.DAO
             connectionString = dbConnectionString;
         }
 
-        Account GetAccount(int accountId)
+        public Account AddToBalance()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Account GetAccount(int userId)
         {
             Account returnAccount = null;
             
@@ -27,7 +32,7 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM accounts WHERE account_id = @accountId", conn);
-                    cmd.Parameters.AddWithValue("@accountId", accountId);
+                    cmd.Parameters.AddWithValue("@accountId", userId);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.HasRows && reader.Read())
@@ -43,9 +48,17 @@ namespace TenmoServer.DAO
             return returnAccount;
         }
 
-       // Account GetBalance();
-       // Account AddToBalance();
-       // Account RemoveFromBalance();
+
+        public Account GetBalance()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Account RemoveFromBalance()
+        {
+            throw new NotImplementedException();
+        }
+
 
         private Account GetAccountFromReader(SqlDataReader reader)
         {
