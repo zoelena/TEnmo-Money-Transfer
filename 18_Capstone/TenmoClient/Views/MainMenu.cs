@@ -8,10 +8,10 @@ namespace TenmoClient.Views
 {
     public class MainMenu : ConsoleMenu
     {
-        private AccountApiDAO accountService;
-        public MainMenu(AccountApiDAO accountService)
+        private AccountApiDAO accountApiDao;
+        public MainMenu(AccountApiDAO accountApiDao)
         {
-            this.accountService = accountService;
+            this.accountApiDao = accountApiDao;
             AddOption("View your current balance", ViewBalance)
                 .AddOption("View your past transfers", ViewTransfers)
                 .AddOption("View your pending requests", ViewRequests)
@@ -29,7 +29,7 @@ namespace TenmoClient.Views
         private MenuOptionResult ViewBalance()
         {
             int userId = UserService.GetUserId();
-            decimal returnedBalance = accountService.GetAccount(userId).Balance;
+            decimal returnedBalance = accountApiDao.GetAccountBalance(userId);
             Console.WriteLine($"Balance: {returnedBalance}");
             return MenuOptionResult.WaitAfterMenuSelection;
         }

@@ -49,9 +49,9 @@ namespace TenmoServer.DAO
         }
 
 
-        public Account GetBalance()
+        public decimal GetBalance(int userId)
         {
-            throw new NotImplementedException();
+            return GetAccount(userId).Balance;
         }
 
         public Account RemoveFromBalance()

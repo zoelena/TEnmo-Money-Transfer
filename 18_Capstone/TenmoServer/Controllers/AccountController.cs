@@ -25,13 +25,13 @@ namespace TenmoServer.Controllers
             string strUserId = User.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
             return String.IsNullOrEmpty(strUserId) ? 0 : Convert.ToInt32(strUserId);
         }
-        [HttpGet]
-        public IActionResult GetAccount()
+        [HttpGet("{userId}")]
+        public IActionResult GetAccountBalance(int userId)
         {
-            int userId = GetUserId();
-            Account account = accountDAO.GetAccount(userId);
+            //int userId = GetUserId();
+            decimal accountBalance = accountDAO.GetBalance(userId);
 
-            return Ok(account);
+            return Ok(accountBalance);
         }
     }
 }

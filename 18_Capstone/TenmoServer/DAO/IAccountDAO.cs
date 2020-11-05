@@ -10,7 +10,7 @@ namespace TenmoServer.DAO
     {
         
         Account GetAccount(int userId);
-        Account GetBalance();
+        decimal GetBalance(int userId);
         Account AddToBalance();
         Account RemoveFromBalance();
     }

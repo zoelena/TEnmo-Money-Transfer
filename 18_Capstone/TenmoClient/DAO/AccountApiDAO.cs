@@ -13,12 +13,12 @@ namespace TenmoClient
         //private static API_Account account = new API_Account();
         //private object registerUser;
 
-        public Account GetAccount(int userID)
+        public decimal GetAccountBalance(int userId)
         {
-            RestRequest request = new RestRequest($"{API_BASE_URL}account/{userID}");
-            IRestResponse<Account> response = client.Get<Account>(request);
-            Account retrievedAccount = response.Data;
-            return retrievedAccount;
+            RestRequest request = new RestRequest($"{API_BASE_URL}account/{userId}");
+            IRestResponse<decimal> response = client.Get<decimal>(request);
+            decimal retrievedAccountBalance = response.Data;
+            return retrievedAccountBalance;
 
         }
 
