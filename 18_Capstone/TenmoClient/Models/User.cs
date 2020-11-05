@@ -3,7 +3,7 @@
     /// <summary>
     /// Return value from login endpoint
     /// </summary>
-    public class API_User
+    public class User
     {
         public int UserId { get; set; }
         public string Username { get; set; }

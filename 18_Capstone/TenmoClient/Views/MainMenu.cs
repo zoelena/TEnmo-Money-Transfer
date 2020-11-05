@@ -8,8 +8,8 @@ namespace TenmoClient.Views
 {
     public class MainMenu : ConsoleMenu
     {
-        private AccountService accountService;
-        public MainMenu(AccountService accountService)
+        private AccountApiDAO accountService;
+        public MainMenu(AccountApiDAO accountService)
         {
             this.accountService = accountService;
             AddOption("View your current balance", ViewBalance)
@@ -61,7 +61,7 @@ namespace TenmoClient.Views
 
         private MenuOptionResult Logout()
         {
-            UserService.SetLogin(new API_User()); //wipe out previous login info
+            UserService.SetLogin(new User()); //wipe out previous login info
             return MenuOptionResult.CloseMenuAfterSelection;
         }
 

@@ -4,14 +4,14 @@ namespace TenmoClient
 {
     public static class UserService
     {
-        private static API_User user = new API_User();
-        private static API_Account account = new API_Account();
+        private static User user = new User();
+        private static Account account = new Account();
 
-        public static void SetLogin(API_User u)
+        public static void SetLogin(User u)
         {
             user = u;
         }
-        public static void SetAccount(API_Account a)
+        public static void SetAccount(Account a)
         {
             account = a;
         }

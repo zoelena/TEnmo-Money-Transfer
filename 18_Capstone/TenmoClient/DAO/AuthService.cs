@@ -15,7 +15,7 @@ namespace TenmoClient
         {
             RestRequest request = new RestRequest(API_BASE_URL + "login/register");
             request.AddJsonBody(registerUser);
-            IRestResponse<API_User> response = client.Post<API_User>(request);
+            IRestResponse<User> response = client.Post<User>(request);
 
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
@@ -40,11 +40,11 @@ namespace TenmoClient
             }
         }
 
-        public API_User Login(LoginUser loginUser)
+        public User Login(LoginUser loginUser)
         {
             RestRequest request = new RestRequest(API_BASE_URL + "login");
             request.AddJsonBody(loginUser);
-            IRestResponse<API_User> response = client.Post<API_User>(request);
+            IRestResponse<User> response = client.Post<User>(request);
 
             if (response.ResponseStatus != ResponseStatus.Completed)
             {

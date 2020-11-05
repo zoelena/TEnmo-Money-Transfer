@@ -22,7 +22,7 @@ namespace TenmoClient.Views
 
         private MenuOptionResult Login()
         {
-            API_User user = null;
+            User user = null;
             while (user == null)
             {
                 LoginUser loginUser = new LoginUser();
@@ -43,7 +43,7 @@ namespace TenmoClient.Views
             UserService.SetLogin(user);
 
             // User is logged in, show the main menu now.
-            AccountService accountService = new AccountService();
+            AccountApiDAO accountService = new AccountApiDAO();
             return new MainMenu(accountService).Show();
         }
 
