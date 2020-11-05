@@ -54,12 +54,27 @@ namespace TenmoServer.DAO
             return GetAccount(userId).Balance;
         }
 
-        public Account RemoveFromBalance()
+        public void RemoveFromBalance(int userId, decimal adjustment)
         {
-            throw new NotImplementedException();
-        }
+            decimal currentBalance = GetAccount(userId).Balance;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
 
-
+                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @balance WHERE user_id = @userId", conn);
+                    cmd.Parameters.AddWithValue("@balance", adjustment);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+         
+        }        
         private Account GetAccountFromReader(SqlDataReader reader)
         {
             Account account = new Account()
