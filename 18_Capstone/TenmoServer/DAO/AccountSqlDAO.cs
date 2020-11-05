@@ -16,9 +16,28 @@ namespace TenmoServer.DAO
             connectionString = dbConnectionString;
         }
 
-        public Account AddToBalance()
+        public void AddToBalance(int userId, decimal adjustment)
         {
-            throw new NotImplementedException();
+            decimal currentBalance = GetAccount(userId).Balance;
+            currentBalance += adjustment;
+            int accountId = GetAccount(userId).AccountID;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @currentBalance WHERE account_Id = @accountId", conn);
+                    cmd.Parameters.AddWithValue("@currentBalance", currentBalance);
+                    cmd.Parameters.AddWithValue("@accountId", accountId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
         }
 
         public Account GetAccount(int userId)
@@ -57,15 +76,17 @@ namespace TenmoServer.DAO
         public void RemoveFromBalance(int userId, decimal adjustment)
         {
             decimal currentBalance = GetAccount(userId).Balance;
+            currentBalance -= adjustment;
+            int accountId = GetAccount(userId).AccountID;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @balance WHERE user_id = @userId", conn);
-                    cmd.Parameters.AddWithValue("@balance", adjustment);
-                    cmd.Parameters.AddWithValue("@userId", userId);
+                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @currentBalance WHERE account_Id = @accountId", conn);
+                    cmd.Parameters.AddWithValue("@currentBalance", currentBalance);
+                    cmd.Parameters.AddWithValue("@accountId", accountId);
                     cmd.ExecuteNonQuery();
                 }
             }

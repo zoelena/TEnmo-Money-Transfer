@@ -11,7 +11,7 @@ namespace TenmoServer.DAO
         
         Account GetAccount(int userId);
         decimal GetBalance(int userId);
-        Account AddToBalance();
-        Account RemoveFromBalance();
+        void AddToBalance(int userId, decimal adjustment);
+        void RemoveFromBalance(int userId, decimal balance);
     }
 }
