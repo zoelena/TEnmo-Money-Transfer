@@ -29,8 +29,7 @@ namespace TenmoClient.Views
         private MenuOptionResult ViewBalance()
         {
             int userId = UserService.GetUserId();
-            UserService.SetAccount(accountService.GetAccount(userId));
-            decimal returnedBalance = UserService.GetBalance();
+            decimal returnedBalance = accountService.GetAccount(userId).Balance;
             Console.WriteLine($"Balance: {returnedBalance}");
             return MenuOptionResult.WaitAfterMenuSelection;
         }
