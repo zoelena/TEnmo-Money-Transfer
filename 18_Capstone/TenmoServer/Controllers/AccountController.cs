@@ -9,12 +9,16 @@ using TenmoServer.Models;
 
 namespace TenmoServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountDAO accountDAO;
+        private IAccountDAO accountDAO;
 
+        public AccountController(IAccountDAO _accountDAO)
+        {
+            accountDAO = _accountDAO;
+        }
 
         [HttpGet("{userId}")]
         public IActionResult GetAccount(int userId)

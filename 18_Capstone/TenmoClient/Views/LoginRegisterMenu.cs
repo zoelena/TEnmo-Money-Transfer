@@ -43,7 +43,8 @@ namespace TenmoClient.Views
             UserService.SetLogin(user);
 
             // User is logged in, show the main menu now.
-            return new MainMenu().Show();
+            AccountService accountService = new AccountService();
+            return new MainMenu(accountService).Show();
         }
 
         private MenuOptionResult Register()

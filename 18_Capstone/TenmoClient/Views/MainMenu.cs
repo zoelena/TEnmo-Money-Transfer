@@ -9,8 +9,9 @@ namespace TenmoClient.Views
     public class MainMenu : ConsoleMenu
     {
         private AccountService accountService;
-        public MainMenu()
-        { 
+        public MainMenu(AccountService accountService)
+        {
+            this.accountService = accountService;
             AddOption("View your current balance", ViewBalance)
                 .AddOption("View your past transfers", ViewTransfers)
                 .AddOption("View your pending requests", ViewRequests)
