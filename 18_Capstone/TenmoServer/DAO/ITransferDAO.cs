@@ -8,8 +8,8 @@ namespace TenmoServer.DAO
 {
     public interface ITransferDAO
     {
-        List<Transfer> TransferList();
+        List<Transfer> TransferList(int accountId);
         Transfer GetSpecificTransfer();
-        Transfer CreateNewTransfer();
+        void CreateNewTransfer(Transfer request);
     }
 }

@@ -16,9 +16,20 @@ namespace TenmoServer.DAO
             connectionString = dbConnectionString;
         }
 
-        public Transfer CreateNewTransfer()
+        public void CreateNewTransfer(Transfer request)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("insert into transfers(account_from, account_to, amount, transfer_status_id, transfer_type_id) values (@account_from, @account_to, @amount, @transferstatus, @transfertype)", connection);
+                command.Parameters.AddWithValue("@account_from", request.AccountFrom);
+                command.Parameters.AddWithValue("@account_to", request.AccountTo);
+                command.Parameters.AddWithValue("@amount", request.Amount);
+                command.Parameters.AddWithValue("@transferstatus", request.TransferStatusID);
+                command.Parameters.AddWithValue("@transfertype", request.TransferTypeID);
+                command.ExecuteNonQuery();
+            }
+            
         }
 
         public Transfer GetSpecificTransfer()
@@ -26,9 +37,21 @@ namespace TenmoServer.DAO
             throw new NotImplementedException();
         }
 
-        public List<Transfer> TransferList()
+        public List<Transfer> TransferList(int accountId)
         {
-            throw new NotImplementedException();
+            List<Transfer> transfers = new List<Transfer>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select * from transfers where (account_from = @accountId)  or(account_to = @accountId)", connection);
+                command.Parameters.AddWithValue("@accountId", accountId);
+                SqlDataReader reader = command.ExecuteReader();
+                while (!reader.Read())
+                {
+                    transfers.Add(GetTransferFromReader(reader));
+                }
+            }
+            return transfers;
         }
 
         private Transfer GetTransferFromReader(SqlDataReader reader)
