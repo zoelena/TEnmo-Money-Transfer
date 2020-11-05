@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +20,15 @@ namespace TenmoServer.Controllers
         {
             accountDAO = _accountDAO;
         }
-
-        [HttpGet("{userId}")]
-        public IActionResult GetAccount(int userId)
+        private int GetUserId()
         {
+            string strUserId = User.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
+            return String.IsNullOrEmpty(strUserId) ? 0 : Convert.ToInt32(strUserId);
+        }
+        [HttpGet]
+        public IActionResult GetAccount()
+        {
+            int userId = GetUserId();
             Account account = accountDAO.GetAccount(userId);
 
             return Ok(account);
