@@ -28,10 +28,10 @@ namespace TenmoServer.Controllers
             return String.IsNullOrEmpty(strUserId) ? 0 : Convert.ToInt32(strUserId);
         }
         
-        [HttpGet("{userId}")]
-        public IActionResult GetAccountBalance(int userId)
+        [HttpGet]
+        public IActionResult GetAccountBalance()
         {
-            int userID = GetUserId();
+            int userId = GetUserId();
             decimal accountBalance = accountDAO.GetBalance(userId);
 
             return Ok(accountBalance);

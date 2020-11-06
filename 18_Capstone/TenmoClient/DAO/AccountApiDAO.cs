@@ -13,11 +13,11 @@ namespace TenmoClient
         private readonly IRestClient client = new RestClient();
 
 
-        public decimal GetAccountBalance(int userId)
+        public decimal GetAccountBalance()
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
-            RestRequest request = new RestRequest($"{API_BASE_URL}account/{userId}");
+            RestRequest request = new RestRequest($"{API_BASE_URL}account");
             IRestResponse<decimal> response = client.Get<decimal>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
