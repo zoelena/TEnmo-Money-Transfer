@@ -46,7 +46,7 @@ namespace TenmoClient.Views
                 Console.WriteLine($"Current Balance for User: {UserService.GetUserName()}");
                 Console.WriteLine();
                 int userId = UserService.GetUserId();
-                decimal returnedBalance = accountApiDao.GetAccountBalance(userId); ///remove userId
+                decimal returnedBalance = accountApiDao.GetAccountBalance(); ///remove userId
                 Console.WriteLine($"Your current account balance is: {returnedBalance}");
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
@@ -93,8 +93,8 @@ namespace TenmoClient.Views
                 }
 
                 Console.WriteLine($"{new string('_', 50)}");
-                int transferId = GetInteger("Please enter transfer ID to view details (0 to cancel): "); //need to implement
-                transferApiDao.GetSpecificTransfer(transferId);
+                int transferId = GetInteger("Please enter transfer ID to view details (0 to cancel): ");
+                transferApiDao.GetSpecificTransfer(transferId); //error occurred
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
             catch (Exception ex)
@@ -130,7 +130,7 @@ namespace TenmoClient.Views
                 Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
-                //need list of users
+                //need list of users need UserApiDAO?
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
                 int accountFrom = GetInteger("Please re-enter your ID: "); //do we need this
