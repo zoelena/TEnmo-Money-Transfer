@@ -11,10 +11,13 @@ namespace TenmoClient.Views
     {
         private AccountApiDAO accountApiDao;
         private TransferApiDAO transferApiDao;
+        private UserApiDAO userApiDao;
         public MainMenu(AccountApiDAO accountApiDao, TransferApiDAO transferApiDao)
         {
             this.transferApiDao = transferApiDao;
             this.accountApiDao = accountApiDao;
+            this.userApiDao = userApiDao;
+
             AddOption("View your current balance", ViewBalance)
                 .AddOption("View your past transfers", ViewTransfers)
                 .AddOption("View your pending requests", ViewRequests)
@@ -135,6 +138,7 @@ namespace TenmoClient.Views
                 Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
+                List<User> users = userApiDao.GetUsers();
                 //need list of users need UserApiDAO?
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
