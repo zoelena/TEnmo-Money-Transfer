@@ -22,16 +22,16 @@ namespace TenmoClient.DAO
 
         }
 
-        public void NewTransfer()
+        public void NewTransfer(int accountTo, int accountFrom, decimal amount)
         {
             Transfer transfer = new Transfer
             {
 
                 TransferTypeID = 1,
                 TransferStatusID = 1,
-                Amount = 50,
-                AccountTo = 2,
-                AccountFrom = 1
+                Amount = amount,
+                AccountTo = accountTo,
+                AccountFrom = accountFrom
 
             };
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer");

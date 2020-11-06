@@ -40,7 +40,7 @@ namespace TenmoClient.Views
         private MenuOptionResult ViewTransfers()
         {
             List<Transfer> transfers = transferApiDao.GetTransfers(UserService.GetUserId());
-            foreach(Transfer toPrint in transfers)
+            foreach (Transfer toPrint in transfers)
             {
                 Console.WriteLine($"{toPrint.TransferID}        {toPrint.TypeName}   {toPrint.Amount}");
             }
@@ -56,7 +56,13 @@ namespace TenmoClient.Views
 
         private MenuOptionResult SendTEBucks()
         {
-            transferApiDao.NewTransfer();
+            int accountTo = GetInteger("Which account number shall we send the bucks to?");
+            int accountFrom = GetInteger("What is your account ID?");
+            decimal amount = GetDecimal("How many bucks shall we send?");
+
+
+
+            transferApiDao.NewTransfer(accountTo, accountFrom, amount);
             return MenuOptionResult.WaitAfterMenuSelection;
         }
 

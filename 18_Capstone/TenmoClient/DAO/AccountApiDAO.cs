@@ -22,6 +22,13 @@ namespace TenmoClient
 
         }
 
+        //public int GetAccountNumber(int userId)
+        //{
+        //    RestRequest request = new RestRequest($"{API_BASE_URL}account/{userId}");
+        //    IRestResponse<int> response = client.Get<int>(request);
+        //    decimal retrievedAccountBalance = response.Data;
+        //    return retrievedAccountBalance;
+        //}
 
         
     }
