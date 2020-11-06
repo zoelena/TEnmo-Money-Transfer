@@ -46,7 +46,7 @@ namespace TenmoClient.Views
                 Console.WriteLine($"Current Balance for User: {UserService.GetUserName()}");
                 Console.WriteLine();
                 int userId = UserService.GetUserId();
-                decimal returnedBalance = accountApiDao.GetAccountBalance(userId);
+                decimal returnedBalance = accountApiDao.GetAccountBalance(userId); ///remove userId
                 Console.WriteLine($"Your current account balance is: {returnedBalance}");
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
@@ -77,11 +77,24 @@ namespace TenmoClient.Views
 
                 foreach (Transfer toPrint in transfers)
                 {
+                    //string column = "";
+                    //if (Transfer.ToId == User.UserId)
+                    //{
+                    //    column = "From";
+                    //    Console.WriteLine($"{ toPrint.FromName}");//add fromName to column
+                    //}
+                    //else
+                    //{
+                    //    column = "To"; //add toName to column
+                    //    Console.WriteLine($"{toPrint.ToName}");
+                            
+                    //}
                     Console.WriteLine($"{toPrint.TransferID,0} {toPrint.FromName,12} {toPrint.ToName,12} {toPrint.Amount,16}");
                 }
 
                 Console.WriteLine($"{new string('_', 50)}");
-                Console.WriteLine("Please enter transfer ID to view details (0 to cancel): "); //need to implement
+                int transferId = GetInteger("Please enter transfer ID to view details (0 to cancel): "); //need to implement
+                transferApiDao.GetSpecificTransfer(transferId);
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
             catch (Exception ex)

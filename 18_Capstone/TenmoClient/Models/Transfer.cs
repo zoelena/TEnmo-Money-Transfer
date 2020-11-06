@@ -13,7 +13,9 @@ namespace TenmoClient.Data
         public int AccountTo { get; set; }
         public decimal Amount { get; set; }
         public string FromName { get; set; }
+        public int FromId { get; set; }
         public string ToName { get; set; }
+        public int ToId { get; set; }
         public string TypeName { get; set; }
         public string StatusName { get; set; }
 

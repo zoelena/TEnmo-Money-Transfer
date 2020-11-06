@@ -34,6 +34,25 @@ namespace TenmoClient.DAO
 
         }
 
+        public Transfer GetSpecificTransfer(int transferId)
+        {
+            JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
+            client.Authenticator = token;
+            RestRequest request = new RestRequest($"{API_BASE_URL}transfer/{transferId}");
+            IRestResponse<Transfer> response = client.Get<Transfer>(request);
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                throw new Exception("Error occurred - unable to reach server.");
+            }
+
+            if (!response.IsSuccessful)
+            {
+                throw new Exception("Authorization is required for this option. Please log in.");
+            }
+            Transfer specificTransfer = response.Data;
+            return specificTransfer;
+
+        }
         public void NewTransfer(int accountTo, int accountFrom, decimal amount)
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
