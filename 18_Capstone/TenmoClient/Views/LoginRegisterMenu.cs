@@ -19,6 +19,16 @@ namespace TenmoClient.Views
             AddOption("Login", Login)
                 .AddOption("Register", Register)
                 .AddOption("Exit", Exit);
+
+            Configure(cfg =>
+            {
+                cfg.Title = "**** TEnmo Login Menu ****";
+                cfg.ItemForegroundColor = ConsoleColor.Blue;
+                cfg.SelectedItemForegroundColor = ConsoleColor.White;
+                cfg.SelectedItemBackgroundColor = ConsoleColor.DarkBlue;
+                cfg.Selector = ">> ";
+                cfg.BeepOnError = true;
+            });
         }
 
         private MenuOptionResult Login()
