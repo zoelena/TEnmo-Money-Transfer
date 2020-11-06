@@ -12,7 +12,7 @@ namespace TenmoClient.Views
         private AccountApiDAO accountApiDao;
         private TransferApiDAO transferApiDao;
         private UserApiDAO userApiDao;
-        public MainMenu(AccountApiDAO accountApiDao, TransferApiDAO transferApiDao)
+        public MainMenu(AccountApiDAO accountApiDao, TransferApiDAO transferApiDao, UserApiDAO userApiDao)
         {
             this.transferApiDao = transferApiDao;
             this.accountApiDao = accountApiDao;
@@ -90,7 +90,10 @@ namespace TenmoClient.Views
 
                 Console.WriteLine($"{new string('_', 50)}");
                 int inputId = GetInteger("Please enter transfer ID to view details (0 to cancel): ");
-                //MAKE SURE 0 DOES NOT PASS, INSTEAD EXIT, CURRENTLY NOT DOING THAT
+                if (inputId == 0)
+                {
+                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                }
                 Transfer requestedTransfer = transfers.Find(x => x.TransferID.Equals(inputId));
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headingsThree = { "Transfer Details" };
@@ -102,8 +105,25 @@ namespace TenmoClient.Views
                 Console.WriteLine($"Type: {requestedTransfer.TypeName}");
                 Console.WriteLine($"Status: {requestedTransfer.StatusName}");
                 Console.WriteLine($"Amount: {requestedTransfer.Amount}");
-                // option to select a different transfer number
                 return MenuOptionResult.WaitAfterMenuSelection;
+
+                //Console.WriteLine("Would you like to look at a different transfer? Y/N: ");
+                //string yesOrNo = Console.ReadLine();
+                //if (yesOrNo == "Y" || yesOrNo == "y")
+                //{
+                //    //int inputIdTwo = GetInteger("Please enter transfer ID to view details (0 to cancel): ");
+
+                //}
+                //if (yesOrNo == "N" || yesOrNo == "n")
+                //{
+                //    Console.WriteLine("Press enter to return to Main Menu.");
+                //    return MenuOptionResult.WaitAfterMenuSelection;
+                //}
+                //if (inputId == 0)
+                //{
+                //    return MenuOptionResult.WaitAfterMenuSelection;
+                //}
+
             }
             catch (Exception ex)
             {
@@ -139,11 +159,24 @@ namespace TenmoClient.Views
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
                 List<User> users = userApiDao.GetUsers();
-                //need list of users need UserApiDAO?
+                foreach (User toPrint in users)
+                {
+                    Console.WriteLine($"{toPrint.UserId,0} {toPrint.Username,16}");
+                }
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
-                //int accountFrom = GetInteger("Please re-enter your ID: "); //do we need this
                 int userIdTo = GetInteger("Enter ID of user you are sending to (0 to cancel): ");
+                
+                if (userIdTo == UserService.GetUserId())
+                {
+                    Console.WriteLine("No money laundering! You can't send money to yourself!");
+                    Console.WriteLine("Press enter to return to Main Menu.");
+                    return MenuOptionResult.WaitAfterMenuSelection;
+                }
+                if (userIdTo == 0)
+                {
+                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                }
                 decimal amount = GetDecimal("Enter amount:");
 
                 transferApiDao.NewTransfer(userIdTo, amount);

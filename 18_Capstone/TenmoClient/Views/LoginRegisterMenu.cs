@@ -54,9 +54,10 @@ namespace TenmoClient.Views
             UserService.SetLogin(user);
 
             // User is logged in, show the main menu now.
-            AccountApiDAO accountService = new AccountApiDAO();
+            AccountApiDAO accountApiDao = new AccountApiDAO();
             TransferApiDAO transferApiDao = new TransferApiDAO();
-            return new MainMenu(accountService, transferApiDao).Show();
+            UserApiDAO userApiDao = new UserApiDAO();
+            return new MainMenu(accountApiDao, transferApiDao, userApiDao).Show();
         }
 
         private MenuOptionResult Register()
