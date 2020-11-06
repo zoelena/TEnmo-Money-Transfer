@@ -23,10 +23,16 @@ namespace TenmoServer.Controllers
             transferDAO = _transferDAO;
             accountDAO = _accountDAO;
         }
-        
+        private int GetUserId()
+        {
+            string strUserId = User.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
+            return String.IsNullOrEmpty(strUserId) ? 0 : Convert.ToInt32(strUserId);
+        }
         [HttpPost]
         public IActionResult NewTransfer(Transfer request)
         {
+            request.AccountFrom = accountDAO.GetAccount(GetUserId()).AccountID;
+            request.AccountTo = accountDAO.GetAccount(request.ToId).AccountID;
             decimal fromBalance = accountDAO.GetAccount(request.AccountFrom).Balance;
             if (request.Amount <= fromBalance)
             {
@@ -42,9 +48,10 @@ namespace TenmoServer.Controllers
             }
         }
 
-        [HttpGet("{accountId}")]
-        public List<Transfer> ListTransfers(int accountId)
+        [HttpGet]
+        public List<Transfer> ListTransfers()
         {
+            int accountId = accountDAO.GetAccount(GetUserId()).AccountID;
             return transferDAO.TransferList(accountId);
         }
     }

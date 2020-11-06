@@ -66,7 +66,7 @@ namespace TenmoClient.Views
                 //else set column to "to"; add toName to column
 
 
-                List<Transfer> transfers = transferApiDao.GetTransfers(UserService.GetUserId());
+                List<Transfer> transfers = transferApiDao.GetTransfers();
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Transfers" };
                 Console.WriteLine($"{headings[0],-14}");
@@ -145,11 +145,11 @@ namespace TenmoClient.Views
                 //need list of users need UserApiDAO?
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
-                int accountFrom = GetInteger("Please re-enter your ID: "); //do we need this
-                int accountTo = GetInteger("Enter ID of user you are sending to (0 to cancel): ");
+                //int accountFrom = GetInteger("Please re-enter your ID: "); //do we need this
+                int userIdTo = GetInteger("Enter ID of user you are sending to (0 to cancel): ");
                 decimal amount = GetDecimal("Enter amount:");
 
-                transferApiDao.NewTransfer(accountFrom, accountTo, amount);
+                transferApiDao.NewTransfer(userIdTo, amount);
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
             catch (Exception ex)

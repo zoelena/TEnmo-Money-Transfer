@@ -14,11 +14,11 @@ namespace TenmoClient.DAO
         //private static API_Account account = new API_Account();
         //private object registerUser;
 
-        public List<Transfer> GetTransfers(int userId)
+        public List<Transfer> GetTransfers()
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
-            RestRequest request = new RestRequest($"{API_BASE_URL}transfer/{userId}");
+            RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
             IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
@@ -53,18 +53,17 @@ namespace TenmoClient.DAO
         //    return specificTransfer;
 
         //}
-        public void NewTransfer(int accountTo, int accountFrom, decimal amount)
+        public void NewTransfer(int userIdTo, decimal amount)
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
             Transfer transfer = new Transfer
             {
 
-                TransferTypeID = 1,
-                TransferStatusID = 1,
+                TransferTypeID = 2,
+                TransferStatusID = 2,
                 Amount = amount,
-                AccountTo = accountTo,
-                AccountFrom = accountFrom
+                ToId = userIdTo,
 
             };
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
