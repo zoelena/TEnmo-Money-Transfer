@@ -56,7 +56,7 @@ namespace TenmoClient.Views
 
         private MenuOptionResult SendTEBucks()
         {
-            Console.WriteLine("Not yet implemented!");
+            transferApiDao.NewTransfer();
             return MenuOptionResult.WaitAfterMenuSelection;
         }
 

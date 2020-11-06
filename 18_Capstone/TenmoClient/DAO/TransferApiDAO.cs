@@ -15,11 +15,29 @@ namespace TenmoClient.DAO
 
         public List<Transfer> GetTransfers(int userId)
         {
-            RestRequest request = new RestRequest($"{API_BASE_URL}transfers/{userId}");
+            RestRequest request = new RestRequest($"{API_BASE_URL}transfer/{userId}");
             IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
             List<Transfer> transferList = response.Data;
             return transferList;
 
+        }
+
+        public void NewTransfer()
+        {
+            Transfer transfer = new Transfer
+            {
+
+                TransferTypeID = 1,
+                TransferStatusID = 1,
+                Amount = 50,
+                AccountTo = 2,
+                AccountFrom = 1
+
+            };
+            RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
+            request.AddJsonBody(transfer);
+            IRestResponse<Transfer> response = client.Post<Transfer>(request);
+            
         }
 
     }
