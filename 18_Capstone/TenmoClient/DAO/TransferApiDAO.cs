@@ -6,7 +6,7 @@ using TenmoClient.Data;
 
 namespace TenmoClient.DAO
 {
-    class TransferApiDAO
+    public class TransferApiDAO
     {
         private readonly static string API_BASE_URL = "https://localhost:44315/";
         private readonly IRestClient client = new RestClient();

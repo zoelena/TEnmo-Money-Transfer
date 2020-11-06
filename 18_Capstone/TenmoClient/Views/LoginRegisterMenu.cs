@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TenmoClient.DAO;
 using TenmoClient.Data;
 
 namespace TenmoClient.Views
@@ -44,7 +45,8 @@ namespace TenmoClient.Views
 
             // User is logged in, show the main menu now.
             AccountApiDAO accountService = new AccountApiDAO();
-            return new MainMenu(accountService).Show();
+            TransferApiDAO transferApiDao = new TransferApiDAO();
+            return new MainMenu(accountService, transferApiDao).Show();
         }
 
         private MenuOptionResult Register()

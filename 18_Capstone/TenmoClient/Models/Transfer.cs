@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TenmoClient.Data
 {
-    class Transfer
+    public class Transfer
     {
         public int TransferID { get; set; }
         public int TransferTypeID { get; set; }

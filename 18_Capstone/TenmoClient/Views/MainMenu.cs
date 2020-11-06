@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TenmoClient.DAO;
 using TenmoClient.Data;
 
 namespace TenmoClient.Views
@@ -9,8 +10,10 @@ namespace TenmoClient.Views
     public class MainMenu : ConsoleMenu
     {
         private AccountApiDAO accountApiDao;
-        public MainMenu(AccountApiDAO accountApiDao)
+        private TransferApiDAO transferApiDao;
+        public MainMenu(AccountApiDAO accountApiDao, TransferApiDAO transferApiDao)
         {
+            this.transferApiDao = transferApiDao;
             this.accountApiDao = accountApiDao;
             AddOption("View your current balance", ViewBalance)
                 .AddOption("View your past transfers", ViewTransfers)
@@ -36,7 +39,12 @@ namespace TenmoClient.Views
 
         private MenuOptionResult ViewTransfers()
         {
-            Console.WriteLine("Not yet implemented!");
+            List<Transfer> transfers = transferApiDao.GetTransfers(UserService.GetUserId());
+            foreach(Transfer toPrint in transfers)
+            {
+                Console.WriteLine($"{toPrint.TransferID}        {toPrint.TypeName}   {toPrint.Amount}");
+            }
+
             return MenuOptionResult.WaitAfterMenuSelection;
         }
 
