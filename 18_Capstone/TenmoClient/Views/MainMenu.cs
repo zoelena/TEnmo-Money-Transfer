@@ -70,8 +70,8 @@ namespace TenmoClient.Views
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Transfers" };
                 Console.WriteLine($"{headings[0],-14}");
-                string[] headingsTwo = { "ID", "From", "To", "Amount" };
-                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10} {headingsTwo[2],10} {headingsTwo[3],20}");
+                string[] headingsTwo = { "ID", "From/To", "Amount" };
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10} {headingsTwo[2],20}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
 
@@ -89,12 +89,24 @@ namespace TenmoClient.Views
                     //    Console.WriteLine($"{toPrint.ToName}");
                             
                     //}
-                    Console.WriteLine($"{toPrint.TransferID,0} {toPrint.FromName,12} {toPrint.ToName,12} {toPrint.Amount,16}");
+                    Console.WriteLine($"{toPrint.TransferID,0} {toPrint.ToName,12} {toPrint.Amount,16}");
                 }
 
                 Console.WriteLine($"{new string('_', 50)}");
-                int transferId = GetInteger("Please enter transfer ID to view details (0 to cancel): ");
-                transferApiDao.GetSpecificTransfer(transferId); //error occurred
+                int inputId = GetInteger("Please enter transfer ID to view details (0 to cancel): ");
+                //transferApiDao.GetSpecificTransfer(transferId); //error occurred unable to reach server
+                Transfer requestedTransfer = transfers.Find(x => x.TransferID.Equals(inputId));
+                Console.WriteLine($"{new string('_', 50)}");
+                string[] headingsThree = { "Transfer Details" };
+                Console.WriteLine($"{headingsThree[0],25}");
+                Console.WriteLine($"{new string('_', 50)}");
+                Console.WriteLine($"ID: {requestedTransfer.TransferID}");
+                Console.WriteLine($"From: {requestedTransfer.FromName}");
+                Console.WriteLine($"To: {requestedTransfer.ToName}");
+                Console.WriteLine($"Type: {requestedTransfer.TypeName}");
+                Console.WriteLine($"Status: {requestedTransfer.StatusName}");
+                Console.WriteLine($"Amount: {requestedTransfer.Amount}");
+                // option to select a different transfer number
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
             catch (Exception ex)
