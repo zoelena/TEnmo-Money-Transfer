@@ -75,12 +75,24 @@ namespace TenmoServer.DAO
             };
 
             transfer.FromName = GetName(transfer.AccountFrom);
+            transfer.FromId = GetUser(transfer.AccountFrom);
             transfer.ToName = GetName(transfer.AccountTo);
+            transfer.ToId = GetUser(transfer.AccountTo);
             transfer.TypeName = GetTransferType(transfer.TransferTypeID);
             transfer.StatusName = GetTransferStatus(transfer.TransferStatusID);
 
             return transfer;
         }
+        private int GetUser(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select user_id from accounts where account_id = @accountid", connection);
+                command.Parameters.AddWithValue("@accountid", id);
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }   
         private string GetName(int id)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

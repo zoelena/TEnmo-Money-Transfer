@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TenmoServer.DAO;
@@ -12,6 +13,7 @@ namespace TenmoServer.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private IAccountDAO accountDAO;
@@ -25,10 +27,11 @@ namespace TenmoServer.Controllers
             string strUserId = User.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
             return String.IsNullOrEmpty(strUserId) ? 0 : Convert.ToInt32(strUserId);
         }
+        
         [HttpGet("{userId}")]
         public IActionResult GetAccountBalance(int userId)
         {
-            //int userId = GetUserId();
+            int userID = GetUserId();
             decimal accountBalance = accountDAO.GetBalance(userId);
 
             return Ok(accountBalance);

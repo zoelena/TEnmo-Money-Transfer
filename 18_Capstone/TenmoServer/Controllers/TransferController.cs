@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TenmoServer.DAO;
@@ -11,6 +12,7 @@ namespace TenmoServer.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class TransferController : ControllerBase
     {
         private ITransferDAO transferDAO;
@@ -21,7 +23,7 @@ namespace TenmoServer.Controllers
             transferDAO = _transferDAO;
             accountDAO = _accountDAO;
         }
-
+        
         [HttpPost]
         public IActionResult NewTransfer(Transfer request)
         {

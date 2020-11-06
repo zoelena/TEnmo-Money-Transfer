@@ -17,6 +17,15 @@ namespace TenmoClient.DAO
         {
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer/{userId}");
             IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                throw new Exception("Error occurred - unable to reach server.");
+            }
+
+            if (!response.IsSuccessful)
+            {
+                throw new Exception("Authorization is required for this option. Please log in.");
+            }
             List<Transfer> transferList = response.Data;
             return transferList;
 
@@ -37,7 +46,20 @@ namespace TenmoClient.DAO
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
             request.AddJsonBody(transfer);
             IRestResponse<Transfer> response = client.Post<Transfer>(request);
-            
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                throw new Exception("Error occurred - unable to reach server.");
+            }
+
+            if (!response.IsSuccessful)
+            {
+                throw new Exception("Authorization is required for this option. Please log in.");
+            }
+            else
+            {
+                Console.WriteLine("Transfer Completed");
+            }
+
         }
 
     }
