@@ -95,6 +95,11 @@ namespace TenmoClient.Views
                     return MenuOptionResult.DoNotWaitAfterMenuSelection;
                 }
                 Transfer requestedTransfer = transfers.Find(x => x.TransferID.Equals(inputId));
+                if (requestedTransfer == null)
+                {
+                    Console.WriteLine("Transfer not found, press enter to return to main menu");
+                    return MenuOptionResult.WaitAfterMenuSelection;
+                }
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headingsThree = { "Transfer Details" };
                 Console.WriteLine($"{headingsThree[0],25}");
@@ -166,16 +171,21 @@ namespace TenmoClient.Views
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
                 int userIdTo = GetInteger("Enter ID of user you are sending to (0 to cancel): ");
-                
+                if (userIdTo == 0)
+                {
+                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                }                
                 if (userIdTo == UserService.GetUserId())
                 {
                     Console.WriteLine("No money laundering! You can't send money to yourself!");
                     Console.WriteLine("Press enter to return to Main Menu.");
                     return MenuOptionResult.WaitAfterMenuSelection;
                 }
-                if (userIdTo == 0)
+                User requestedUser = users.Find(x => x.UserId.Equals(userIdTo));
+                if (requestedUser == null)
                 {
-                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                    Console.WriteLine("User not found, press enter to return to main menu");
+                    return MenuOptionResult.WaitAfterMenuSelection;
                 }
                 decimal amount = GetDecimal("Enter amount:");
 
