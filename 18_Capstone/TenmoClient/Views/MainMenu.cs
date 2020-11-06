@@ -61,11 +61,7 @@ namespace TenmoClient.Views
         {
             try
             {
-                //string column = "";
-                //if (ToId == user.id) { set column to "from"; add fromName to column}
-                //else set column to "to"; add toName to column
-
-
+                string comboTypeName = "";
                 List<Transfer> transfers = transferApiDao.GetTransfers();
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Transfers" };
@@ -77,24 +73,21 @@ namespace TenmoClient.Views
 
                 foreach (Transfer toPrint in transfers)
                 {
-                    //string column = "";
-                    //if (Transfer.ToId == User.UserId)
-                    //{
-                    //    column = "From";
-                    //    Console.WriteLine($"{ toPrint.FromName}");//add fromName to column
-                    //}
-                    //else
-                    //{
-                    //    column = "To"; //add toName to column
-                    //    Console.WriteLine($"{toPrint.ToName}");
-                            
-                    //}
-                    Console.WriteLine($"{toPrint.TransferID,0} {toPrint.ToName,12} {toPrint.Amount,16}");
+                    if (toPrint.ToId == UserService.GetUserId())
+                    {
+                        comboTypeName = $"From: {toPrint.FromName}";
+                    }
+                    else
+                    {
+                        comboTypeName = $"To: {toPrint.ToName}";
+                    }
+
+                    Console.WriteLine($"{toPrint.TransferID,0} {comboTypeName,12} {toPrint.Amount,16}");
                 }
 
                 Console.WriteLine($"{new string('_', 50)}");
                 int inputId = GetInteger("Please enter transfer ID to view details (0 to cancel): ");
-                //transferApiDao.GetSpecificTransfer(transferId); //error occurred unable to reach server
+                //MAKE SURE 0 DOES NOT PASS, INSTEAD EXIT, CURRENTLY NOT DOING THAT
                 Transfer requestedTransfer = transfers.Find(x => x.TransferID.Equals(inputId));
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headingsThree = { "Transfer Details" };
