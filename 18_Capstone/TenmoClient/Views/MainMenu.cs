@@ -65,7 +65,7 @@ namespace TenmoClient.Views
             try
             {
                 string comboTypeName = "";
-                List<Transfer> transfers = transferApiDao.GetTransfers();
+                List<Transfer> transfers = transferApiDao.GetTransfers(3);
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Transfers" };
                 Console.WriteLine($"{headings[0],-14}");
@@ -142,8 +142,47 @@ namespace TenmoClient.Views
         {
             try
             {
-                Console.WriteLine("Not yet implemented!");
+                List<Transfer> transferRequests = transferApiDao.GetTransfers(1);
+                Console.WriteLine($"{new string('_', 50)}");
+                string[] headings = { "Requests" };
+                Console.WriteLine($"{headings[0],-14}");
+                string[] headingsTwo = { "ID", "To", "Amount" };
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10} {headingsTwo[2],20}");
+                Console.WriteLine($"{new string('_', 50)}");
+                Console.WriteLine();
+
+                foreach (Transfer toPrint in transferRequests) //i think we need this foreach
+                {
+                    Console.WriteLine($"{toPrint.TransferID,0} {toPrint.ToName,12} {toPrint.Amount,16}");
+                }
+
+                Console.WriteLine($"{new string('_', 50)}");
+                int inputId = GetInteger("Please enter an ID to view details (0 to cancel): ");
+                if (inputId == 0)
+                {
+                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                }
+                Transfer requestedTransfer = transferRequests.Find(x => x.TransferID.Equals(inputId));
+                if (requestedTransfer == null)
+                {
+                    Console.WriteLine("Request not found, press enter to return to main menu");
+                    return MenuOptionResult.WaitAfterMenuSelection;
+                }
+                Console.WriteLine($"{new string('_', 50)}");
+                string[] headingsThree = { "Transfer Details" };
+                Console.WriteLine($"{headingsThree[0],25}");
+                Console.WriteLine($"{new string('_', 50)}");
+                Console.WriteLine($"ID: {requestedTransfer.TransferID}");
+                Console.WriteLine($"From: {requestedTransfer.FromName}");
+                Console.WriteLine($"To: {requestedTransfer.ToName}");
+                Console.WriteLine($"Type: {requestedTransfer.TypeName}");
+                Console.WriteLine($"Status: {requestedTransfer.StatusName}");
+                Console.WriteLine($"Amount: {requestedTransfer.Amount}");
+
+                Console.WriteLine($"{new string('_', 50)}");
+
                 return MenuOptionResult.WaitAfterMenuSelection;
+
             }
             catch (Exception ex)
             {
@@ -203,7 +242,40 @@ namespace TenmoClient.Views
         {
             try
             {
-                Console.WriteLine("Not yet implemented!");
+                Console.WriteLine($"{new string('_', 50)}");
+                string[] headings = { "Users" };
+                Console.WriteLine($"{headings[0],0}");
+                string[] headingsTwo = { "ID", "Name" };
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10}");
+                Console.WriteLine($"{new string('_', 50)}");
+                Console.WriteLine();
+                List<User> users = userApiDao.GetUsers();
+                foreach (User toPrint in users)
+                {
+                    Console.WriteLine($"{toPrint.UserId,0} {toPrint.Username,16}");
+                }
+                Console.WriteLine();
+                Console.WriteLine($"{new string('_', 50)}");
+                int userIdFrom = GetInteger("Enter ID of user you are requesting from (0 to cancel): ");
+                if (userIdFrom == 0)
+                {
+                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                }
+                if (userIdFrom == UserService.GetUserId())
+                {
+                    Console.WriteLine("No money laundering! You can't receive money from yourself!");
+                    Console.WriteLine("Press enter to return to Main Menu.");
+                    return MenuOptionResult.WaitAfterMenuSelection;
+                }
+                User requestedUser = users.Find(x => x.UserId.Equals(userIdFrom));
+                if (requestedUser == null)
+                {
+                    Console.WriteLine("User not found, press enter to return to main menu");
+                    return MenuOptionResult.WaitAfterMenuSelection;
+                }
+                decimal amount = GetDecimal("Enter amount:");
+
+                transferApiDao.NewRequest(userIdFrom, amount);
                 return MenuOptionResult.WaitAfterMenuSelection;
             }
             catch (Exception ex)

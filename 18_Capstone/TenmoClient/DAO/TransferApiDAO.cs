@@ -2,6 +2,7 @@
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using TenmoClient.Data;
 
@@ -14,11 +15,12 @@ namespace TenmoClient.DAO
         //private static API_Account account = new API_Account();
         //private object registerUser;
 
-        public List<Transfer> GetTransfers()
+        public List<Transfer> GetTransfers(int transferType)
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
+            request.AddJsonBody(transferType);
             IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
@@ -91,8 +93,8 @@ namespace TenmoClient.DAO
             Transfer transfer = new Transfer
             {
 
-                TransferTypeID = 2,
-                TransferStatusID = 2,
+                TransferTypeID = 1,
+                TransferStatusID = ,
                 Amount = amount,
                 FromId = userIdFrom,
 
