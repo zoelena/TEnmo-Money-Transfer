@@ -31,6 +31,19 @@ namespace TenmoServer.DAO
             }
             
         }
+        public void UpdateTransfer(Transfer request)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("update transfers set transfer_status_id = @transferstatus where transfer_id = @transferid", connection);
+                command.Parameters.AddWithValue("@transferstatus", request.TransferStatusID);
+                command.Parameters.AddWithValue("@transferid", request.TransferID);
+;
+                command.ExecuteNonQuery();
+            }
+
+        }
 
         public Transfer GetSpecificTransfer(int transferId)
         {

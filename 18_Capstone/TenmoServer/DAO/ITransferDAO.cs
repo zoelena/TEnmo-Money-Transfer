@@ -11,5 +11,6 @@ namespace TenmoServer.DAO
         List<Transfer> TransferList(int accountId);
         Transfer GetSpecificTransfer(int transferId);
         void CreateNewTransfer(Transfer request);
+        void UpdateTransfer(Transfer request);
     }
 }

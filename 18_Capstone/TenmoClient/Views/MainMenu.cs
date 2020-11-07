@@ -65,7 +65,7 @@ namespace TenmoClient.Views
             try
             {
                 string comboTypeName = "";
-                List<Transfer> transfers = transferApiDao.GetTransfers(2);
+                List<Transfer> transfers = transferApiDao.GetTransfers(2, UserService.GetUserId());
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Transfers" };
                 Console.WriteLine($"{headings[0],-14}");
@@ -142,7 +142,7 @@ namespace TenmoClient.Views
         {
             try
             {
-                List<Transfer> transferRequests = transferApiDao.GetTransfers(1);
+                List<Transfer> transferRequests = transferApiDao.GetTransfers(1, UserService.GetUserId());
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Requests" };
                 Console.WriteLine($"{headings[0],-14}");
@@ -187,11 +187,13 @@ namespace TenmoClient.Views
                 }
                 if (inputIdTwo == 1)
                 {
-                    transferApiDao.UpdateTransferStatus(inputIdTwo);
+                    requestedTransfer.TransferStatusID = 2;
+                    transferApiDao.UpdateTransferStatus(requestedTransfer);
                 }
                 else if (inputIdTwo == 2)
                 {
-                    transferApiDao.UpdateTransferStatus(inputIdTwo);
+                    requestedTransfer.TransferStatusID = 3;
+                    transferApiDao.UpdateTransferStatus(requestedTransfer);
                 }
                 return MenuOptionResult.WaitAfterMenuSelection;
 

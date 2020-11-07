@@ -75,5 +75,23 @@ namespace TenmoServer.Controllers
             int accountId = accountDAO.GetAccount(GetUserId()).AccountID;
             return transferDAO.TransferList(accountId);
         }
+        [HttpPut]
+        public IActionResult UpdateTransferStatus(Transfer updatedTransfer)
+        {
+            decimal fromBalance = accountDAO.GetAccount(updatedTransfer.AccountFrom).Balance;
+            if (updatedTransfer.Amount <= fromBalance)
+            {
+                transferDAO.UpdateTransfer(updatedTransfer);
+                accountDAO.AddToBalance(updatedTransfer.AccountTo, updatedTransfer.Amount);
+                accountDAO.RemoveFromBalance(updatedTransfer.AccountFrom, updatedTransfer.Amount);
+
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { message = "Insufficient Funds" });
+            }
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using TenmoClient.Data;
@@ -15,7 +16,7 @@ namespace TenmoClient.DAO
         //private static API_Account account = new API_Account();
         //private object registerUser;
 
-        public List<Transfer> GetTransfers(int transferStatus)
+        public List<Transfer> GetTransfers(int transferStatus, int userId)
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
@@ -36,7 +37,7 @@ namespace TenmoClient.DAO
             {
                 foreach(Transfer toCheck in transferList)
                 {
-                    if (toCheck.TransferStatusID == 1)
+                    if ((toCheck.TransferStatusID == 1)&&(toCheck.FromId==userId))
                     {
                         finalTransferList.Add(toCheck);
                     }
@@ -96,10 +97,17 @@ namespace TenmoClient.DAO
             {
                 throw new Exception("Error occurred - unable to reach server.");
             }
-
+            
             if (!response.IsSuccessful)
             {
-                throw new Exception("Authorization is required for this option. Please log in.");
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new Exception("Authorization is required for this option. Please log in.");
+                }
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Insufficient Funds");
+                }
             }
             else
             {
@@ -137,12 +145,12 @@ namespace TenmoClient.DAO
                 Console.WriteLine("Transfer Requested");
             }
         }
-        public void UpdateTransferStatus(int transferStatusID)
+        public void UpdateTransferStatus(Transfer updatedTransfer)
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
-            request.AddJsonBody(transferStatusID);
+            request.AddJsonBody(updatedTransfer);
             IRestResponse<Transfer> response = client.Put<Transfer>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
@@ -154,18 +162,15 @@ namespace TenmoClient.DAO
                 throw new Exception("Authorization is required for this option. Please log in.");
             }
             string status = "";
-            if (transferStatusID == 1)
+            if (updatedTransfer.TransferStatusID == 2)
             {
                 status = "Approved";
             }
-            if (transferStatusID == 2)
+            if (updatedTransfer.TransferStatusID == 3)
             {
                 status = "Rejected";
             }
-            else
-            {
-                Console.WriteLine($"Transfer {status}");
-            }
+            Console.WriteLine($"Transfer {status}");            
         }
 
     }
