@@ -178,9 +178,21 @@ namespace TenmoClient.Views
                 Console.WriteLine($"Type: {requestedTransfer.TypeName}");
                 Console.WriteLine($"Status: {requestedTransfer.StatusName}");
                 Console.WriteLine($"Amount: {requestedTransfer.Amount}");
-
+                Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
-
+                int inputIdTwo = GetInteger("Please enter 1 to Approve or 2 to Reject the request (0 to do neither): ");
+                if (inputIdTwo == 0)
+                {
+                    return MenuOptionResult.DoNotWaitAfterMenuSelection;
+                }
+                if (inputIdTwo == 1)
+                {
+                    transferApiDao.UpdateTransferStatus(inputIdTwo);
+                }
+                else if (inputIdTwo == 2)
+                {
+                    transferApiDao.UpdateTransferStatus(inputIdTwo);
+                }
                 return MenuOptionResult.WaitAfterMenuSelection;
 
             }
