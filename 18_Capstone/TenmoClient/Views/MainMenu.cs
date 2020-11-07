@@ -65,7 +65,7 @@ namespace TenmoClient.Views
             try
             {
                 string comboTypeName = "";
-                List<Transfer> transfers = transferApiDao.GetTransfers(3);
+                List<Transfer> transfers = transferApiDao.GetTransfers(2);
                 Console.WriteLine($"{new string('_', 50)}");
                 string[] headings = { "Transfers" };
                 Console.WriteLine($"{headings[0],-14}");

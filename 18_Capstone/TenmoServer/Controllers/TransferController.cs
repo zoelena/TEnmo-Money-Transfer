@@ -31,20 +31,41 @@ namespace TenmoServer.Controllers
         [HttpPost]
         public IActionResult NewTransfer(Transfer request)
         {
-            request.AccountFrom = accountDAO.GetAccount(GetUserId()).AccountID;
-            request.AccountTo = accountDAO.GetAccount(request.ToId).AccountID;
-            decimal fromBalance = accountDAO.GetAccount(request.AccountFrom).Balance;
-            if (request.Amount <= fromBalance)
+            if (request.TransferTypeID == 2)
             {
-                transferDAO.CreateNewTransfer(request);
-                accountDAO.AddToBalance(request.AccountTo, request.Amount);
-                accountDAO.RemoveFromBalance(request.AccountFrom, request.Amount);
+                request.AccountFrom = accountDAO.GetAccount(GetUserId()).AccountID;
+                request.AccountTo = accountDAO.GetAccount(request.ToId).AccountID;
+                decimal fromBalance = accountDAO.GetAccount(request.AccountFrom).Balance;
+                if (request.Amount <= fromBalance)
+                {
+                    transferDAO.CreateNewTransfer(request);
+                    accountDAO.AddToBalance(request.AccountTo, request.Amount);
+                    accountDAO.RemoveFromBalance(request.AccountFrom, request.Amount);
 
-                return Ok();
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Insufficient Funds" });
+                }
             }
             else
             {
-                return BadRequest(new { message = "Insufficient Funds" });
+
+                request.AccountTo = accountDAO.GetAccount(GetUserId()).AccountID;
+                request.AccountFrom = accountDAO.GetAccount(request.FromId).AccountID;
+                decimal fromBalance = accountDAO.GetAccount(request.AccountFrom).Balance;
+                if (request.Amount <= fromBalance)
+                {
+                    request.TransferStatusID = 1;
+                    transferDAO.CreateNewTransfer(request);
+                    
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { message = "Insufficient Funds" });
+                }
             }
         }
 

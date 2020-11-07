@@ -15,12 +15,12 @@ namespace TenmoClient.DAO
         //private static API_Account account = new API_Account();
         //private object registerUser;
 
-        public List<Transfer> GetTransfers(int transferType)
+        public List<Transfer> GetTransfers(int transferStatus)
         {
             JwtAuthenticator token = new JwtAuthenticator(UserService.GetToken());
             client.Authenticator = token;
             RestRequest request = new RestRequest($"{API_BASE_URL}transfer");
-            request.AddJsonBody(transferType);
+            
             IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
@@ -32,7 +32,29 @@ namespace TenmoClient.DAO
                 throw new Exception("Authorization is required for this option. Please log in.");
             }
             List<Transfer> transferList = response.Data;
-            return transferList;
+            List<Transfer> finalTransferList = new List<Transfer>();
+            if (transferStatus == 1)
+            {
+                foreach(Transfer toCheck in transferList)
+                {
+                    if (toCheck.TransferStatusID == 1)
+                    {
+                        finalTransferList.Add(toCheck);
+                    }
+                }
+            }
+            if (transferStatus != 1)
+            {
+                foreach (Transfer toCheck in transferList)
+                {
+                    if (toCheck.TransferStatusID != 1)
+                    {
+                        finalTransferList.Add(toCheck);
+                    }
+                }
+            }
+
+            return finalTransferList;
 
         }
 
@@ -94,7 +116,7 @@ namespace TenmoClient.DAO
             {
 
                 TransferTypeID = 1,
-                TransferStatusID = ,
+                TransferStatusID = 1,
                 Amount = amount,
                 FromId = userIdFrom,
 
@@ -113,7 +135,7 @@ namespace TenmoClient.DAO
             }
             else
             {
-                Console.WriteLine("Transfer Completed");
+                Console.WriteLine("Transfer Requested");
             }
 
         }
