@@ -23,8 +23,8 @@ namespace TenmoClient.Views
             Configure(cfg =>
             {
                 cfg.Title = "**** TEnmo Login Menu ****";
-                cfg.ItemForegroundColor = ConsoleColor.Blue;
-                cfg.SelectedItemForegroundColor = ConsoleColor.White;
+                cfg.ItemForegroundColor = ConsoleColor.DarkYellow;
+                cfg.SelectedItemForegroundColor = ConsoleColor.DarkYellow;
                 cfg.SelectedItemBackgroundColor = ConsoleColor.DarkBlue;
                 cfg.Selector = ">> ";
                 cfg.BeepOnError = true;
@@ -86,7 +86,11 @@ namespace TenmoClient.Views
 
         protected override void OnBeforeShow()
         {
-            Console.WriteLine("Welcome to TEnmo!");
+            Console.WriteLine($"{new string('_', 26)}");
+            Console.WriteLine();
+            Console.WriteLine("****Welcome to TEnmo!****");
+            Console.WriteLine();
+            Console.WriteLine($"{new string('_', 26)}");
         }
 
         #region Console Helper Functions

@@ -29,8 +29,8 @@ namespace TenmoClient.Views
             Configure(cfg =>
             {
                 cfg.Title = "**** Welcome to TEnmo! ****";
-                cfg.ItemForegroundColor = ConsoleColor.Blue;
-                cfg.SelectedItemForegroundColor = ConsoleColor.White;
+                cfg.ItemForegroundColor = ConsoleColor.DarkYellow;
+                cfg.SelectedItemForegroundColor = ConsoleColor.DarkYellow;
                 cfg.SelectedItemBackgroundColor = ConsoleColor.DarkBlue;
                 cfg.Selector = ">> ";
                 cfg.BeepOnError = true;
@@ -39,14 +39,16 @@ namespace TenmoClient.Views
 
         protected override void OnBeforeShow()
         {
-            Console.WriteLine($"TE Account Menu for User: {UserService.GetUserName()}");
+            Console.WriteLine($"TEnmo Account Menu for User: {UserService.GetUserName()}");
         }
 
         private MenuOptionResult ViewBalance()
         {
             try
             {
-                Console.WriteLine($"Current Balance for User: {UserService.GetUserName()}");
+                Console.WriteLine($"{new string('_', 50)}");
+                Console.WriteLine($"Current TEnmo User: {UserService.GetUserName()}");
+                Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
                 int userId = UserService.GetUserId();
                 decimal returnedBalance = accountApiDao.GetAccountBalance(); ///remove userId
@@ -67,10 +69,10 @@ namespace TenmoClient.Views
                 string comboTypeName = "";
                 List<Transfer> transfers = transferApiDao.GetTransfers(2, UserService.GetUserId());
                 Console.WriteLine($"{new string('_', 50)}");
-                string[] headings = { "Transfers" };
-                Console.WriteLine($"{headings[0],-14}");
+                string[] headings = { "Past Transfers:" };
+                Console.WriteLine($"{headings[0],0}");
                 string[] headingsTwo = { "ID", "From/To", "Amount" };
-                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10} {headingsTwo[2],20}");
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],20} {headingsTwo[2],20}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
 
@@ -82,10 +84,10 @@ namespace TenmoClient.Views
                     }
                     else
                     {
-                        comboTypeName = $"To: {toPrint.ToName}";
+                        comboTypeName = $"To:   {toPrint.ToName}";
                     }
 
-                    Console.WriteLine($"{toPrint.TransferID,0} {comboTypeName,12} {toPrint.Amount,16}");
+                    Console.WriteLine($"{toPrint.TransferID,0} {comboTypeName,22} {toPrint.Amount,20}");
                 }
 
                 Console.WriteLine($"{new string('_', 50)}");
@@ -101,13 +103,13 @@ namespace TenmoClient.Views
                     return MenuOptionResult.WaitAfterMenuSelection;
                 }
                 Console.WriteLine($"{new string('_', 50)}");
-                string[] headingsThree = { "Transfer Details" };
+                string[] headingsThree = { "Transfer Details:" };
                 Console.WriteLine($"{headingsThree[0],25}");
                 Console.WriteLine($"{new string('_', 50)}");
-                Console.WriteLine($"ID: {requestedTransfer.TransferID}");
-                Console.WriteLine($"From: {requestedTransfer.FromName}");
-                Console.WriteLine($"To: {requestedTransfer.ToName}");
-                Console.WriteLine($"Type: {requestedTransfer.TypeName}");
+                Console.WriteLine($"ID:     {requestedTransfer.TransferID}");
+                Console.WriteLine($"From:   {requestedTransfer.FromName}");
+                Console.WriteLine($"To:     {requestedTransfer.ToName}");
+                Console.WriteLine($"Type:   {requestedTransfer.TypeName}");
                 Console.WriteLine($"Status: {requestedTransfer.StatusName}");
                 Console.WriteLine($"Amount: {requestedTransfer.Amount}");
                 return MenuOptionResult.WaitAfterMenuSelection;
@@ -144,16 +146,16 @@ namespace TenmoClient.Views
             {
                 List<Transfer> transferRequests = transferApiDao.GetTransfers(1, UserService.GetUserId());
                 Console.WriteLine($"{new string('_', 50)}");
-                string[] headings = { "Requests" };
+                string[] headings = { "Pending Requests:" };
                 Console.WriteLine($"{headings[0],-14}");
                 string[] headingsTwo = { "ID", "To", "Amount" };
-                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10} {headingsTwo[2],20}");
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],20} {headingsTwo[2],20}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
 
-                foreach (Transfer toPrint in transferRequests) //i think we need this foreach
+                foreach (Transfer toPrint in transferRequests) 
                 {
-                    Console.WriteLine($"{toPrint.TransferID,0} {toPrint.ToName,12} {toPrint.Amount,16}");
+                    Console.WriteLine($"{toPrint.TransferID,0} {toPrint.ToName,22} {toPrint.Amount,20}");
                 }
 
                 Console.WriteLine($"{new string('_', 50)}");
@@ -213,13 +215,13 @@ namespace TenmoClient.Views
                 string[] headings = { "Users" };
                 Console.WriteLine($"{headings[0],0}");
                 string[] headingsTwo = { "ID", "Name" };
-                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10}");
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],20}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
                 List<User> users = userApiDao.GetUsers();
                 foreach (User toPrint in users)
                 {
-                    Console.WriteLine($"{toPrint.UserId,0} {toPrint.Username,16}");
+                    Console.WriteLine($"{toPrint.UserId,0} {toPrint.Username,21}");
                 }
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
@@ -260,13 +262,13 @@ namespace TenmoClient.Views
                 string[] headings = { "Users" };
                 Console.WriteLine($"{headings[0],0}");
                 string[] headingsTwo = { "ID", "Name" };
-                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],10}");
+                Console.WriteLine($"{headingsTwo[0],0} {headingsTwo[1],20}");
                 Console.WriteLine($"{new string('_', 50)}");
                 Console.WriteLine();
                 List<User> users = userApiDao.GetUsers();
                 foreach (User toPrint in users)
                 {
-                    Console.WriteLine($"{toPrint.UserId,0} {toPrint.Username,16}");
+                    Console.WriteLine($"{toPrint.UserId,0} {toPrint.Username,21}");
                 }
                 Console.WriteLine();
                 Console.WriteLine($"{new string('_', 50)}");
